@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task/models/alarm.dart';
 import 'package:task/utils/colors.dart';
 import 'package:task/widgets/custom_button.dart';
 import 'package:task/widgets/alarm_widget.dart';
+import 'dart:math';
+import 'package:task/services/notification_service.dart';
+import 'package:task/utils/text_style.dart';
 import '../../AddAlarm/add_alarm_screen.dart';
-import 'dart:math'; // Random ID তৈরির জন্য
 
 class HomeScreen extends StatefulWidget {
   final String? selectedLocation;
@@ -18,11 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Alarm> alarms = [];
+  final NotificationService _notificationService = NotificationService();
 
   @override
   void initState() {
     super.initState();
-    _addDefaultAlarms();
+    // It's a good practice to fetch location here or handle initial alarms.
+    // _addDefaultAlarms();
+    _notificationService.initNotification();
   }
 
   void _addDefaultAlarms() {
@@ -35,18 +41,35 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addNewAlarm() async {
-    final newAlarmTime = await Navigator.push(
+    final newAlarm = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AddAlarmScreen()),
     );
 
-    if (newAlarmTime != null) {
+    if (newAlarm != null) {
       setState(() {
-        final newAlarm = Alarm(id: Random().nextInt(1000), scheduledTime: newAlarmTime);
         alarms.add(newAlarm);
         alarms.sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
       });
+
+      _notificationService.scheduleNotification(
+        id: newAlarm.id,
+        scheduledTime: newAlarm.scheduledTime,
+        title: 'New Alarm!',
+        body: 'Your alarm is set for ${DateFormat('hh:mm a').format(newAlarm.scheduledTime)}',
+      );
+
+      _notificationService.showNotificationImmediately(
+        'Alarm Set!',
+        'Your alarm has been set for ${DateFormat('hh:mm a, d MMM y').format(newAlarm.scheduledTime)}',
+      );
     }
+  }
+
+  void _deleteAlarm(int id) {
+    setState(() {
+      alarms.removeWhere((alarm) => alarm.id == id);
+    });
   }
 
   @override
@@ -65,13 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Selected Location",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    headingThree(
+                      data: "Selected Location",
+                      textColor: AppColors.whiteColor,
+                      fontWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -98,13 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
-                "Alarms",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+              headingThree(
+                data: "Alarms",
+                textColor: AppColors.whiteColor,
+                fontWeight: FontWeight.w600,
               ),
               const SizedBox(height: 12),
               Expanded(
@@ -121,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         date: date,
                         alarmId: alarm.id,
                         scheduledTime: alarm.scheduledTime,
+                        onDelete: () => _deleteAlarm(alarm.id),
                       ),
                     );
                   },

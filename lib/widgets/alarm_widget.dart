@@ -1,13 +1,15 @@
+// lib/widgets/alarm_widget.dart
+
 import 'package:flutter/material.dart';
 import 'package:task/services/notification_service.dart';
 import 'package:task/utils/colors.dart';
-import 'package:task/utils/text_style.dart';
 
-class AlarmTile extends StatefulWidget {
+class AlarmTile extends StatelessWidget {
   final String time;
   final String date;
   final int alarmId;
   final DateTime scheduledTime;
+  final VoidCallback onDelete;
 
   const AlarmTile({
     super.key,
@@ -15,71 +17,61 @@ class AlarmTile extends StatefulWidget {
     required this.date,
     required this.alarmId,
     required this.scheduledTime,
+    required this.onDelete,
   });
 
   @override
-  State<AlarmTile> createState() => _AlarmTileState();
-}
-
-class _AlarmTileState extends State<AlarmTile> {
-  final NotificationService _notificationService = NotificationService();
-  bool _isActive = true;
-
-  @override
-  void initState() {
-    super.initState();
-    // অ্যাপ চালু হওয়ার সময় নোটিফিকেশনটি শিডিউল করা
-    _notificationService.scheduleNotification(widget.alarmId, widget.scheduledTime);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        color: AppColors.tileColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          headingTwo(
-            data: widget.time,
-            textColor: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: headingThree(
-              data: widget.date,
-              textColor: AppColors.subTextColor,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const Spacer(),
-          Switch(
-            value: _isActive,
-            onChanged: (value) {
-              setState(() {
-                _isActive = value;
-              });
+    final NotificationService notificationService = NotificationService();
 
-              if (_isActive) {
-                // টগল অন হলে নোটিফিকেশন শিডিউল করবে
-                _notificationService.scheduleNotification(
-                  widget.alarmId,
-                  widget.scheduledTime,
-                );
-              } else {
-                // টগল অফ হলে নোটিফিকেশন বাতিল করবে
-                _notificationService.cancelNotification(widget.alarmId);
-              }
-            },
-            activeColor: AppColors.switchColor,
-            inactiveTrackColor: AppColors.inActiveSwitchColor,
-            inactiveThumbColor: AppColors.whiteColor,
-          ),
-        ],
+    return Dismissible(
+      key: Key(alarmId.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      onDismissed: (direction) {
+        notificationService.cancelNotification(alarmId);
+        onDelete();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Alarm with ID $alarmId dismissed')),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.tileColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.alarm, color: AppColors.whiteColor, size: 24),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  time,
+                  style: TextStyle(
+                    color: AppColors.whiteColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  date,
+                  style: TextStyle(
+                    color: AppColors.whiteColor,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

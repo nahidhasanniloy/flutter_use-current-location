@@ -1,7 +1,11 @@
+// lib/screens/AddAlarmScreen/add_alarm_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:task/models/alarm.dart';
 import 'package:task/utils/colors.dart';
-import 'dart:math'; // Random() ব্যবহার করার জন্য এটি যোগ করতে হবে
+import 'package:task/utils/text_style.dart';
+import 'dart:math';
+import 'package:intl/intl.dart';
 
 class AddAlarmScreen extends StatefulWidget {
   const AddAlarmScreen({super.key});
@@ -43,10 +47,9 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
 
   void _saveAlarm() {
     if (_selectedDateTime != null) {
-      // একটি অনন্য (unique) আইডি তৈরি করা হচ্ছে
       final newAlarm = Alarm(
         scheduledTime: _selectedDateTime!,
-        id: Random().nextInt(100000), // একটি বড় সংখ্যা ব্যবহার করা হয়েছে
+        id: Random().nextInt(100000),
       );
       Navigator.pop(context, newAlarm);
     } else {
@@ -61,40 +64,56 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text('Set New Alarm'),
+        title: headingTwo(
+          data: 'Set New Alarm',
+          textColor: AppColors.whiteColor,
+        ),
         backgroundColor: AppColors.backgroundColor,
         foregroundColor: AppColors.whiteColor,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => _selectDateTime(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.homeButtonColor,
-                foregroundColor: AppColors.whiteColor,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => _selectDateTime(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.homeButtonColor,
+                  foregroundColor: AppColors.whiteColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
+                child: headingThree(
+                  data: 'Select Date and Time',
+                  textColor: AppColors.whiteColor,
+                ),
               ),
-              child: const Text('Select Date and Time'),
-            ),
-            const SizedBox(height: 20),
-            if (_selectedDateTime != null)
-              Text(
-                'Selected: ${_selectedDateTime!.day}/${_selectedDateTime!.month}/${_selectedDateTime!.year} at ${_selectedDateTime!.hour}:${_selectedDateTime!.minute}',
-                style: TextStyle(fontSize: 18, color: AppColors.whiteColor),
+              const SizedBox(height: 20),
+              if (_selectedDateTime != null)
+                Text(
+                  'Selected: ${DateFormat('hh:mm a, d MMM y').format(_selectedDateTime!)}',
+                  style: TextStyle(
+                    color: AppColors.whiteColor,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveAlarm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.alarmButtonColor,
+                  foregroundColor: AppColors.whiteColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
+                child: headingThree(
+                  data: 'Save Alarm',
+                  textColor: AppColors.whiteColor,
+                ),
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveAlarm,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.homeButtonColor,
-                foregroundColor: AppColors.whiteColor,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              ),
-              child: const Text('Save Alarm'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

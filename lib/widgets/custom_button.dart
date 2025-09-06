@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onPressed;
-  final Color color;
-  final double borderRadius;
-  final IconData? suffixIcon; // 👉 নতুন
+  final Color? color;
+  final double? borderRadius;
+  final IconData? suffixIcon;
 
   const CustomButton({
     super.key,
-    required this.text,
+    this.text,
     required this.onPressed,
-    this.color = Colors.purple,
-    this.borderRadius = 10,
-    this.suffixIcon, // 👉 optional
+    this.color,
+    this.borderRadius,
+    this.suffixIcon,
   });
 
   @override
@@ -21,21 +21,24 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(borderRadius!),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
-        onPressed: onPressed,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              text,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              text!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             if (suffixIcon != null) ...[
               const SizedBox(width: 8),
