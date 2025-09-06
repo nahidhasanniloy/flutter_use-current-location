@@ -79,10 +79,14 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
             children: [
               ElevatedButton(
                 onPressed: () => _selectDateTime(context),
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.homeButtonColor,
                   foregroundColor: AppColors.whiteColor,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: headingThree(
                   data: 'Select Date and Time',
@@ -106,6 +110,9 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                   backgroundColor: AppColors.alarmButtonColor,
                   foregroundColor: AppColors.whiteColor,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: headingThree(
                   data: 'Save Alarm',
