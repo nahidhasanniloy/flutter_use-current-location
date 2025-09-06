@@ -45,8 +45,7 @@ class AlarmTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween, // টগলকে ডান পাশে সরাতে
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
@@ -63,7 +62,7 @@ class AlarmTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(width: 38), // সময় এবং তারিখের মধ্যে ব্যবধান
+                const SizedBox(width: 38),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,7 +78,7 @@ class AlarmTile extends StatelessWidget {
               ],
             ),
             Transform.scale(
-              scale: 1.1, // টগলের সাইজ বড় করার জন্য
+              scale: 1.1,
               child: Switch(
                 value: isActive,
                 onChanged: onToggle,

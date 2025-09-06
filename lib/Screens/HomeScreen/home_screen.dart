@@ -1,12 +1,9 @@
-// lib/screens/HomeScreen/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task/models/alarm.dart';
 import 'package:task/utils/colors.dart';
 import 'package:task/widgets/custom_button.dart';
 import 'package:task/widgets/alarm_widget.dart';
-import 'dart:math';
 import 'package:task/services/notification_service.dart';
 import 'package:task/utils/text_style.dart';
 import '../../AddAlarm/add_alarm_screen.dart';
@@ -46,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
         id: newAlarm.id,
         scheduledTime: newAlarm.scheduledTime,
         title: 'New Alarm!',
-        body: 'Your alarm is set for ${DateFormat('hh:mm a').format(newAlarm.scheduledTime)}',
+        body:
+            'Your alarm is set for ${DateFormat('hh:mm a').format(newAlarm.scheduledTime)}',
       );
 
       _notificationService.showNotificationImmediately(
@@ -73,13 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
           id: alarmToToggle.id,
           scheduledTime: alarmToToggle.scheduledTime,
           title: 'Alarm On!',
-          body: 'Your alarm is now active for ${DateFormat('hh:mm a').format(alarmToToggle.scheduledTime)}',
+          body:
+              'Your alarm is now active for ${DateFormat('hh:mm a').format(alarmToToggle.scheduledTime)}',
         );
       } else {
         _notificationService.cancelNotification(alarmToToggle.id);
       }
     });
   }
+
+  // ============================================== //=========================//
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const SizedBox(height: 80),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48,
+                  vertical: 10,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -106,12 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.location_on, color: Colors.white, size: 20),
+                        const Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             widget.selectedLocation ?? "Location not available",
-                            style: const TextStyle(color: Colors.white70, fontSize: 14),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ],
@@ -138,8 +149,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: alarms.length,
                   itemBuilder: (context, index) {
                     final alarm = alarms[index];
-                    final time = DateFormat('hh:mm a').format(alarm.scheduledTime);
-                    final date = DateFormat('E d MMM y').format(alarm.scheduledTime);
+                    final time = DateFormat(
+                      'hh:mm a',
+                    ).format(alarm.scheduledTime);
+                    final date = DateFormat(
+                      'E d MMM y',
+                    ).format(alarm.scheduledTime);
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: AlarmTile(
@@ -147,9 +162,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         date: date,
                         alarmId: alarm.id,
                         scheduledTime: alarm.scheduledTime,
-                        isActive: alarm.isActive, // Pass the isActive state
+                        isActive: alarm.isActive,
                         onDelete: () => _deleteAlarm(alarm.id),
-                        onToggle: (bool value) { // Pass the toggle function
+                        onToggle: (bool value) {
+
                           _toggleAlarm(alarm.id, value);
                         },
                       ),

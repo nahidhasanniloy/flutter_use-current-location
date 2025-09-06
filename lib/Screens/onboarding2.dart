@@ -96,6 +96,7 @@ class Onboarding2 extends StatelessWidget {
                   // =================================== custom button ==================================//
                   CustomButton(
                     text: 'Text',
+                    color: AppColors.primaryColor,
                     onPressed: () {
                       Navigator.push(
                         context,

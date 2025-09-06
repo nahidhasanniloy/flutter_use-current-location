@@ -1,5 +1,3 @@
-// lib/utils/text_style.dart
-
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
@@ -28,7 +26,7 @@ Widget headingThree({
     data,
     style: TextStyle(
       fontWeight: fontWeight ?? FontWeight.w400,
-      fontSize: 18, // Changed to 18 to match your design
+      fontSize: 18,
       color: textColor ?? AppColors.whiteColor,
       overflow: overflow,
     ),

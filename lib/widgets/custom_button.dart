@@ -25,15 +25,17 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius!),
+            // Use null-aware operator to provide a default value (e.g., 8.0)
+            borderRadius: BorderRadius.circular(borderRadius ?? 8.0),
           ),
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Text(
-              text!,
+              text ?? '',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
