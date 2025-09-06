@@ -1,3 +1,4 @@
+// lib/screens/HomeScreen/home_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -26,18 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // It's a good practice to fetch location here or handle initial alarms.
-    // _addDefaultAlarms();
     _notificationService.initNotification();
-  }
-
-  void _addDefaultAlarms() {
-    final now = DateTime.now();
-    setState(() {
-      alarms.add(Alarm(id: Random().nextInt(1000), scheduledTime: now.add(const Duration(minutes: 5))));
-      alarms.add(Alarm(id: Random().nextInt(1000), scheduledTime: now.add(const Duration(minutes: 10))));
-      alarms.add(Alarm(id: Random().nextInt(1000), scheduledTime: now.add(const Duration(minutes: 15))));
-    });
   }
 
   void _addNewAlarm() async {
@@ -69,6 +59,25 @@ class _HomeScreenState extends State<HomeScreen> {
   void _deleteAlarm(int id) {
     setState(() {
       alarms.removeWhere((alarm) => alarm.id == id);
+    });
+    _notificationService.cancelNotification(id);
+  }
+
+  void _toggleAlarm(int id, bool isActive) {
+    setState(() {
+      final alarmToToggle = alarms.firstWhere((alarm) => alarm.id == id);
+      alarmToToggle.isActive = isActive;
+
+      if (isActive) {
+        _notificationService.scheduleNotification(
+          id: alarmToToggle.id,
+          scheduledTime: alarmToToggle.scheduledTime,
+          title: 'Alarm On!',
+          body: 'Your alarm is now active for ${DateFormat('hh:mm a').format(alarmToToggle.scheduledTime)}',
+        );
+      } else {
+        _notificationService.cancelNotification(alarmToToggle.id);
+      }
     });
   }
 
@@ -138,7 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         date: date,
                         alarmId: alarm.id,
                         scheduledTime: alarm.scheduledTime,
+                        isActive: alarm.isActive, // Pass the isActive state
                         onDelete: () => _deleteAlarm(alarm.id),
+                        onToggle: (bool value) { // Pass the toggle function
+                          _toggleAlarm(alarm.id, value);
+                        },
                       ),
                     );
                   },

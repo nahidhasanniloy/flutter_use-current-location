@@ -1,7 +1,4 @@
-// lib/widgets/alarm_widget.dart
-
 import 'package:flutter/material.dart';
-import 'package:task/services/notification_service.dart';
 import 'package:task/utils/colors.dart';
 
 class AlarmTile extends StatelessWidget {
@@ -10,6 +7,8 @@ class AlarmTile extends StatelessWidget {
   final int alarmId;
   final DateTime scheduledTime;
   final VoidCallback onDelete;
+  final bool isActive;
+  final ValueChanged<bool> onToggle;
 
   const AlarmTile({
     super.key,
@@ -18,12 +17,12 @@ class AlarmTile extends StatelessWidget {
     required this.alarmId,
     required this.scheduledTime,
     required this.onDelete,
+    required this.isActive,
+    required this.onToggle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final NotificationService notificationService = NotificationService();
-
     return Dismissible(
       key: Key(alarmId.toString()),
       direction: DismissDirection.endToStart,
@@ -34,7 +33,6 @@ class AlarmTile extends StatelessWidget {
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (direction) {
-        notificationService.cancelNotification(alarmId);
         onDelete();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Alarm with ID $alarmId dismissed')),
@@ -47,28 +45,48 @@ class AlarmTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // টগলকে ডান পাশে সরাতে
           children: [
-            Icon(Icons.alarm, color: AppColors.whiteColor, size: 24),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  time,
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: AppColors.whiteColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  date,
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 14,
-                  ),
+                const SizedBox(width: 38), // সময় এবং তারিখের মধ্যে ব্যবধান
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      date,
+                      style: TextStyle(
+                        color: AppColors.whiteColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ],
+            ),
+            Transform.scale(
+              scale: 1.1, // টগলের সাইজ বড় করার জন্য
+              child: Switch(
+                value: isActive,
+                onChanged: onToggle,
+                activeColor: Color(0xff7b4cdf),
+                inactiveThumbColor: Colors.grey,
+                inactiveTrackColor: Colors.grey[800],
+              ),
             ),
           ],
         ),

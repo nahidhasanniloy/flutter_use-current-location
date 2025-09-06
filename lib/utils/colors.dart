@@ -11,6 +11,10 @@ class AppColors {
   static const Color subTextColor = Color(0xffD0D0D1);
   static const Color switchColor = Color(0xff2B3041);
   static const Color inActiveSwitchColor = Color(0xff393649);
+  static const Color toggleColor = Color(0xff7b4cdf);
+
+
+
 
 
 
