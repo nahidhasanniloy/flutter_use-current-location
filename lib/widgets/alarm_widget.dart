@@ -70,7 +70,7 @@ class AlarmTile extends StatelessWidget {
                       date,
                       style: TextStyle(
                         color: AppColors.whiteColor,
-                        fontSize: 14,
+                        fontSize: 13,
                       ),
                     ),
                   ],
