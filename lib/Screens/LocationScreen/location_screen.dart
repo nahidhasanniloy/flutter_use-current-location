@@ -117,7 +117,7 @@ class _LocationScreenState extends State<LocationScreen> {
               _isLoading
                   ? Center(child: CircularProgressIndicator(color: AppColors.whiteColor))
                   : CustomButton(
-                text: 'Use Current Location',
+                text: 'User Current Location',
                 onPressed: () async {
                   String locationAddress = await _getCurrentLocation();
                   if (!locationAddress.contains("denied") && !locationAddress.contains("disabled")) {
