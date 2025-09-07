@@ -6,4 +6,4 @@ Assalamu Alaikum In this app, first we can see three onboarding skins according 
 
 ## Screenshot
 
-![App Screenshot]([images/screenshot.png](https://github.com/nahidhasanniloy/flutter_use-current-location/blob/master/app_ss%20(1).jpg?raw=true))
+![image alt](https://github.com/nahidhasanniloy/flutter_use-current-location/blob/master/app_ss%20(1).jpg?raw=true)
