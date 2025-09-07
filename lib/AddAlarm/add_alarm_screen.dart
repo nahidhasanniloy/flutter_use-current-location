@@ -1,5 +1,3 @@
-// lib/screens/AddAlarmScreen/add_alarm_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:task/models/alarm.dart';
 import 'package:task/utils/colors.dart';
@@ -83,7 +81,10 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.homeButtonColor,
                   foregroundColor: AppColors.whiteColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -97,10 +98,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
               if (_selectedDateTime != null)
                 Text(
                   'Selected: ${DateFormat('hh:mm a, d MMM y').format(_selectedDateTime!)}',
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(color: AppColors.whiteColor, fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               const SizedBox(height: 20),
@@ -109,7 +107,10 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.alarmButtonColor,
                   foregroundColor: AppColors.whiteColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
